@@ -1,5 +1,5 @@
 // first: save the data go to products.js
-
+import { cart } from "../data/cart.js";
 // second: Generate HTML
 let productsHTML = ``;
 
@@ -28,7 +28,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class="js-quantity-selector-${product.id}">
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -44,7 +44,7 @@ products.forEach((product) => {
 
           <div class="product-spacer"></div>
 
-          <div class="added-to-cart">
+          <div class="added-to-cart js-added-to-cart-${product.id}">
             <img src="images/icons/checkmark.png">
             Added
           </div>
@@ -58,16 +58,21 @@ products.forEach((product) => {
 })
 document.querySelector(".js-products-grid").innerHTML = productsHTML;
 
+const timeouts = [];
+
 document.querySelectorAll(".js-add-cart")
   .forEach((button) => {
     button.addEventListener('click', () => {
       const productId = button.dataset.productId;
+
       let matchingItem;
+
       cart.forEach((item) => {
         if (productId === item.productId) {
           matchingItem = item;
         }
       });
+
       if (matchingItem) {
         matchingItem.quantity++;
       } else {
@@ -79,8 +84,15 @@ document.querySelectorAll(".js-add-cart")
       let cartQuantity = 0
       cart.forEach((item) => {
         cartQuantity += item.quantity;
-
       });
       document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
+      const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
+      addedMessage.classList.add('visible');
+      if(timeouts[productId]){
+        clearTimeout(timeouts[productId]);
+      }
+      timeouts[productId] = setTimeout(() => {
+        addedMessage.classList.remove('visible');
+      }, 2000);
     })
   });
