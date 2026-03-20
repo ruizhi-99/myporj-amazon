@@ -1,7 +1,7 @@
 // first: save the data go to products.js
 import { cart, addTocart } from "../data/cart.js";
 import { products } from "../data/products.js";
-import { formatCurrency } from "./money.js";
+import formatCurrency  from "./money.js";
 import { calculateCartQuantity } from "../data/cart.js";
 
 
