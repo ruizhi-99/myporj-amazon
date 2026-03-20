@@ -2,6 +2,7 @@
 import { cart, addTocart } from "../data/cart.js";
 import { products } from "../data/products.js";
 import { formatCurrency } from "./money.js";
+import { calculateCartQuantity } from "../data/cart.js";
 
 
 // second: Generate HTML
@@ -66,13 +67,12 @@ const timeouts = [];
 
 
 
-function updateCartQuantity() {
-  let cartQuantity = 0
-  cart.forEach((cartItem) => {
-    cartQuantity += cartItem.quantity;
-  });
+export function updateCartQuantity() {
+  const cartQuantity = calculateCartQuantity();
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
+
+updateCartQuantity();
 
 function displayAdded(productId) {
   const addedMessage = document.querySelector(`.js-added-to-cart-${productId}`);
