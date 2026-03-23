@@ -1,3 +1,4 @@
+import { validDeliveryOption } from "./deliveryOptions.js";
 export let cart;
 
 loadFromStorage();
@@ -24,7 +25,7 @@ function saveTostorage() {
 }
 
 
-export function addTocart(productId) {
+export function addTocart(productId, quantity = 1) {
     let matchingItem;
 
     cart.forEach((cartItem) => {
@@ -34,11 +35,11 @@ export function addTocart(productId) {
     });
 
     if (matchingItem) {
-        matchingItem.quantity++;
+        matchingItem.quantity += quantity;
     } else {
         cart.push({
             productId: productId,
-            quantity: 1,
+            quantity: quantity,
             deliveryOptionId: '1'
         });
     }
@@ -86,6 +87,12 @@ export function updateDeliveryOption(productId, deliveryOptionId) {
             matchingItem = cartItem;
         }
     });
+    if(!matchingItem){
+        return;
+    }
+    if(!validDeliveryOption(deliveryOptionId)){
+        return;
+    }
     matchingItem.deliveryOptionId = deliveryOptionId;
     saveTostorage();
 }
