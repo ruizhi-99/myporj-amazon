@@ -1,8 +1,7 @@
 // first: save the data go to products.js
-import { cart, addTocart } from "../data/cart.js";
+import { cart } from "../data/cart-class.js";
 import { products } from "../data/products.js";
-import formatCurrency  from "./money.js";
-import { calculateCartQuantity } from "../data/cart.js";
+
 
 
 // second: Generate HTML
@@ -68,9 +67,8 @@ document.querySelector(".js-products-grid").innerHTML = productsHTML;
 const timeouts = [];
 
 
-
 export function updateCartQuantity() {
-  const cartQuantity = calculateCartQuantity();
+  const cartQuantity = cart.calculateCartQuantity();
   document.querySelector(".js-cart-quantity").innerHTML = cartQuantity;
 }
 
@@ -93,7 +91,7 @@ document.querySelectorAll(".js-add-cart")
       const productId = button.dataset.productId;
       const quantitySelector = document.querySelector(`.js-quantity-selector-${productId}`);
       const quantity = Number(quantitySelector.value);
-      addTocart(productId,quantity);
+      cart.addToCart(productId,quantity);
       updateCartQuantity();
       displayAdded(productId);
     })

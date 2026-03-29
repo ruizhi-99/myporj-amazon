@@ -56,10 +56,12 @@ function Cart(localStorageKey) {
         },
 
         calculateCartQuantity() {
-            return this.cartItems.reduce(
-                (total, item) => total + item.quantity,
-                0
-            );
+            let cartQuantity = 0;
+            cart.forEach((cartItem) => {
+                cartQuantity += cartItem.quantity;
+            });
+
+            return cartQuantity;
         },
 
         updateQuantity(productId, newQuantity) {
@@ -93,6 +95,4 @@ function Cart(localStorageKey) {
     return cart;
 }
 
-const test = Cart("cart-oop");
-test.loadFromStorage();
-console.log(test);
+export const cart = new Cart('cart-oop');

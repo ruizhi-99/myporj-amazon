@@ -1,5 +1,5 @@
 //first save the data
-import { cart, removeCart, calculateCartQuantity, updateQuantity, updateDeliveryOption } from "../../data/cart.js";
+import { cart } from "../../data/cart-class.js";
 import { products, getProduct } from "../../data/products.js";
 import { formatCurrency } from "../money.js";
 import { deliveryOptions, getDeliveryOption } from "../../data/deliveryOptions.js";
@@ -10,7 +10,7 @@ import { calculateDeliveryDate } from "../../data/deliveryOptions.js";
 
 export function renderOrderSummary() {
   let cartSummaryHTML = '';
-  cart.forEach((cartItem) => {
+  cart.cartItems.forEach((cartItem) => {
     const productId = cartItem.productId;
     const matchingProduct = getProduct(productId);
     const deliveryOptionId = cartItem.deliveryOptionId;
@@ -98,7 +98,7 @@ export function renderOrderSummary() {
   document.querySelectorAll(".js-delete-link").forEach((link) => {
     link.addEventListener("click", () => {
       const productId = link.dataset.productId;
-      removeCart(productId);
+      cart.removeCart(productId);
       const container = document.querySelector(`.js-cart-item-container-${productId}`);
       container.remove();
       renderCheckoutHeader();
@@ -133,7 +133,7 @@ export function renderOrderSummary() {
         alert('Quantity must be at least 0 and less than 1000');
         return;
       }
-      updateQuantity(productId, newQuantity);
+      cart.updateQuantity(productId, newQuantity);
       container.classList.remove('is-editing-quantity');
       document.querySelector(`.js-quantity-label-${productId}`).innerHTML = newQuantity;
       renderCheckoutHeader();
@@ -155,7 +155,7 @@ export function renderOrderSummary() {
   document.querySelectorAll('.js-delivery-option').forEach((element) => {
     element.addEventListener('click', () => {
       const { productId, deliveryOptionId } = element.dataset;
-      updateDeliveryOption(productId, deliveryOptionId);
+      cart.updateDeliveryOption(productId, deliveryOptionId);
       renderCheckoutHeader();
       renderOrderSummary();
       renderPaymentSummary();
