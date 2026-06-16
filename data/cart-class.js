@@ -16,7 +16,6 @@ class Cart {
         } catch {
             this.cartItems = [];
         }
-        }
     }
 
     saveToStorage() {
